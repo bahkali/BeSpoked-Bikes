@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-export function useFetch<T>(fetchFn: () => Promise<T>) {
+export function useFetch<T>(fetchFn: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -23,9 +23,8 @@ export function useFetch<T>(fetchFn: () => Promise<T>) {
     }
   }, []);
 
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { refetch(); }, [refetch, ...deps]);
 
   return { data, loading, error, refetch };
 }
