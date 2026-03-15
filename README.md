@@ -37,46 +37,65 @@ A full-stack sales tracking application for BeSpoked Bikes, a high-end bicycle s
 - Salesperson commission is calculated as: `(Sale Price - Discount) × Commission Percentage`.
 - The database is seeded with sample data for testing.
 
+## Getting Started
+
+### Prerequisites
+
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [Node.js](https://nodejs.org/) (v18+)
+
 ### Backend
 
 ```bash
-cd backend
+cd Backend
 dotnet restore
 dotnet ef database update
 dotnet run
 ```
 
+The API starts at `http://localhost:5194`.
+
 ### Frontend
+
 ```bash
-cd frontend
+cd FrontEnd
 npm install
 npm run dev
 ```
 
+The app opens at `http://localhost:3000`.
+
 ## Project Structure
 
+```
 BeSpoked/
-├── backend/          # .NET 8 Web API
-│   ├── Controllers/  # API endpoints
-│   ├── Models/       # Entity classes
-│   ├── Data/         # DbContext, seed data, migrations
-│   └── Services/     # Business logic
-├── frontend/         # React + TypeScript
+├── Backend/             # .NET 8 Web API
+│   ├── Controllers/     # API endpoints
+│   ├── Models/          # Entity classes
+│   ├── Data/            # DbContext, seed data, migrations
+│   ├── DTOs/            # Data transfer objects
+│   └── Services/        # Business logic
+├── FrontEnd/            # React + TypeScript
 │   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── hooks/
-│   │   └── services/  # API client
+│   │   ├── components/  # Shared UI (Layout, DataTable)
+│   │   ├── pages/       # Route-level pages
+│   │   ├── hooks/       # Custom hooks (useFetch)
+│   │   ├── services/    # API client (axios)
+│   │   └── types/       # TypeScript interfaces
 │   └── package.json
 └── README.md
+```
 
 ## API Endpoints
-Method	Route	Description
-GET	/api/salespersons	List all salespersons
-PUT	/api/salespersons/{id}	Update a salesperson
-GET	/api/products	List all products
-PUT	/api/products/{id}	Update a product
-GET	/api/customers	List all customers
-GET	/api/sales	List sales (optional date filter)
-POST	/api/sales	Create a new sale
-GET	/api/reports/quarterly	Quarterly commission report
+
+| Method | Route                          | Description                                                |
+| ------ | ------------------------------ | ---------------------------------------------------------- |
+| GET    | `/api/products`                | List all products                                          |
+| PUT    | `/api/products/{id}`           | Update a product                                           |
+| GET    | `/api/salespersons`            | List all salespersons                                      |
+| PUT    | `/api/salespersons/{id}`       | Update a salesperson                                       |
+| GET    | `/api/customers`               | List all customers                                         |
+| GET    | `/api/sales`                   | List sales (optional `startDate` & `endDate` query params) |
+| POST   | `/api/sales`                   | Create a new sale                                          |
+| GET    | `/api/sales/quarterly-report`  | Quarterly commission report (`year` & `quarter` params)    |
+| GET    | `/api/discounts`               | List all discounts                                         |
