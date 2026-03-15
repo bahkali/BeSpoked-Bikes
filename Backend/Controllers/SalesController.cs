@@ -94,8 +94,12 @@ public class SalesController : ControllerBase
         var startDate = new DateTime(year, startMonth, 1);
         var endDate = startDate.AddMonths(3).AddDays(-1);
 
-        var salespersons = await _context.Sales
+        var sales = await _context.Sales
+            .Include(s => s.Salesperson)
             .Where(s => s.SalesDate >= startDate && s.SalesDate <= endDate)
+            .ToListAsync();
+
+        var salespersons = sales
             .GroupBy(s => new { s.SalespersonId, s.Salesperson.FirstName, s.Salesperson.LastName })
             .Select(g => new CommissionReportDto
             {
@@ -106,7 +110,7 @@ public class SalesController : ControllerBase
                 TotalCommission = g.Sum(s => s.SalespersonCommission)
             })
             .OrderByDescending(r => r.TotalCommission)
-            .ToListAsync();
+            .ToList();
 
         return Ok(new QuarterlyReportDto
         {
