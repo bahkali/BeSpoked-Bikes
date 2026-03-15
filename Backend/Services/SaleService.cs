@@ -35,7 +35,7 @@ public class SaleService : ISaleService
 
         var discount = await _context.Discounts
             .Where(d => d.ProductId == productId && d.BeginDate <= salesDate && d.EndDate >= salesDate)
-            .OrderByDescending(d => d.DiscountPercentage)
+            .OrderByDescending(d => (double)d.DiscountPercentage)
             .FirstOrDefaultAsync();
 
         var price = product.SalePrice;
